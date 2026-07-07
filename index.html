@@ -94,6 +94,8 @@
       --rail-x: 7px;     /* horizontal centre of the rail */
       --indent: 36px;    /* text/label offset from the rail */
       position: relative;
+      margin-top: 16px;          /* space below the "News" heading */
+      margin-bottom: 16px;       /* breathing room before the next section */
       max-height: 360px;         /* keep the section compact — scroll for older news */
       overflow-y: auto;
       overflow-x: hidden;
@@ -129,15 +131,15 @@
       background-repeat: repeat-y;
     }
 
-    .news-timeline .year { position: relative; margin: 0 0 26px; }
+    .news-timeline .year { position: relative; margin: 0 0 18px; }
     .news-timeline .year:last-child { margin-bottom: 0; }
 
     .news-timeline .year__label {
       position: relative;
-      font-size: 1.2rem;   /* ~19px, matches the "Timeline Classic" size */
+      font-size: 1.05rem;  /* ~17px — bold year marker kept close to the 16px body size */
       font-weight: 700;
       line-height: 1.4;
-      margin: 0 0 10px;
+      margin: 0 0 7px;
       padding-left: var(--indent);
       color: #000;
       letter-spacing: .01em;
@@ -162,7 +164,7 @@
       align-items: baseline;
       gap: 9px;
       padding-left: var(--indent);
-      margin: 0 0 11px;
+      margin: 0 0 8px;
     }
     .news-timeline .entry:last-child { margin-bottom: 0; }
     .news-timeline .entry__text {
@@ -198,7 +200,7 @@
 
     @media (max-width: 480px) {
       .news-timeline { --indent: 30px; }
-      .news-timeline .year__label { font-size: 1.1rem; }
+      .news-timeline .year__label { font-size: 1rem; }
       .news-timeline .entry { gap: 8px; }
     }
     @media (max-width: 360px) {
@@ -322,13 +324,14 @@
 
 
         <!-- Publications -->
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr>
-            <td style="padding:20px;width:100%;vertical-align:middle">
+        <br>
+        <table width="100%" align="center" border="0" cellpadding="0">
+          <tr style="padding:0px">
+            <td width="100%" valign="middle">
               <heading>Publications</heading>
             </td>
           </tr>
-        </tbody></table>
+        </table>
 
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
 
