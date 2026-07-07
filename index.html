@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Shreyash Arya - AI Research Engineer at Detesia (CISPA) and Research Collaborator at MPI-INF. Machine Learning Explainability, Computer Vision.">
 
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&display=swap' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
     a {
@@ -86,6 +86,124 @@
     span.highlight {
       background-color: #CA7FD4;
     }
+
+    /* News timeline — year rail + category badges (scoped to .news-timeline) */
+    .news-timeline {
+      --rail: #c8c8c8;   /* dotted line */
+      --node: #7d7d7d;   /* year node dot */
+      --rail-x: 7px;     /* horizontal centre of the rail */
+      --indent: 36px;    /* text/label offset from the rail */
+      position: relative;
+      max-height: 360px;         /* keep the section compact — scroll for older news */
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 10px;       /* room for the scrollbar so it never covers text */
+      scrollbar-width: thin;
+      scrollbar-color: #d0d0d0 transparent;
+    }
+    .news-timeline::-webkit-scrollbar { width: 8px; }
+    .news-timeline::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 4px; }
+    .news-timeline::-webkit-scrollbar-thumb:hover { background: #bcbcbc; }
+    .news-timeline::-webkit-scrollbar-track { background: transparent; }
+    .news-timeline *,
+    .news-timeline *::before,
+    .news-timeline *::after { box-sizing: border-box; }
+
+    .news-timeline .timeline {
+      position: relative;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    /* The vertical dotted line: true round dots via a repeating radial gradient. */
+    .news-timeline .timeline::before {
+      content: "";
+      position: absolute;
+      left: calc(var(--rail-x) - 1px);
+      top: 7px;
+      bottom: 7px;
+      width: 2px;
+      background-image: radial-gradient(circle, var(--rail) 0 1px, transparent 1.5px);
+      background-size: 2px 8px;
+      background-position: center top;
+      background-repeat: repeat-y;
+    }
+
+    .news-timeline .year { position: relative; margin: 0 0 26px; }
+    .news-timeline .year:last-child { margin-bottom: 0; }
+
+    .news-timeline .year__label {
+      position: relative;
+      font-size: 1.2rem;   /* ~19px, matches the "Timeline Classic" size */
+      font-weight: 700;
+      line-height: 1.4;
+      margin: 0 0 10px;
+      padding-left: var(--indent);
+      color: #000;
+      letter-spacing: .01em;
+    }
+    /* Solid node dot on the rail, white halo masks the dotted line behind it. */
+    .news-timeline .year__label::before {
+      content: "";
+      position: absolute;
+      left: calc(var(--rail-x) - 5.5px);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--node);
+      box-shadow: 0 0 0 3px #fff;
+    }
+
+    .news-timeline .year__items { list-style: none; margin: 0; padding: 0; }
+    .news-timeline .entry {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      padding-left: var(--indent);
+      margin: 0 0 11px;
+    }
+    .news-timeline .entry:last-child { margin-bottom: 0; }
+    .news-timeline .entry__text {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      color: #000;
+    }
+
+    /* Category badges — restrained, one low-saturation hue per category. */
+    .news-timeline .badge {
+      flex: 0 0 auto;
+      display: inline-block;
+      position: relative;
+      top: -1px;
+      font-size: 10.5px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .news-timeline .badge--paper   { background: #eaf0fb; color: #34518f; border-color: #d6e1f5; }
+    .news-timeline .badge--talk    { background: #eaf3ec; color: #3c6b47; border-color: #d6e7da; }
+    .news-timeline .badge--career  { background: #f5efe2; color: #846127; border-color: #eaddc7; }
+    .news-timeline .badge--media   { background: #f2ecf7; color: #6a4a86; border-color: #e3d8ee; }
+    .news-timeline .badge--service { background: #e7f1f2; color: #396a70; border-color: #d3e5e7; }
+    .news-timeline .badge--thesis  { background: #f7ecec; color: #8a4444; border-color: #eed7d7; }
+
+    @media (max-width: 480px) {
+      .news-timeline { --indent: 30px; }
+      .news-timeline .year__label { font-size: 1.1rem; }
+      .news-timeline .entry { gap: 8px; }
+    }
+    @media (max-width: 360px) {
+      .news-timeline { --indent: 28px; }
+    }
   </style>
 
 </head>
@@ -126,61 +244,79 @@
 
 
         <!-- News -->
-        <table id="news" class="table" align="right" border="0" cellspacing="0" cellpadding="10">
-        <tr class="row">
-        <td class="cell">
-        <heading>News</heading>
-        <div class="news-scroll-box">
-        <ul>
-            <li>
-               2026: &nbsp &nbsp Our work <a href="https://github.com/shrebox/Artifact-free-B-cos-Networks">"Faithful, Interpretable Chest X-ray Diagnosis with Artifact-free B-cos Networks"</a> accepted at <a href="https://conferences.miccai.org/2026/en/">MICCAI 2026</a>, Main Track.
-            </li>
-            <li>
-               2025: &nbsp &nbsp Our work <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> accepted at the <a href="https://www.dagm-gcpr.de/year/2025/accepted-papers">DAGM German Conference on Pattern Recognition, Freiburg 2025</a>, Nectar Track.
-            </li>
-            <li>
-               2025: &nbsp &nbsp Presenting <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> at the <a href="https://icvss.dmi.unict.it/icvss2025/Home">International Summer School for Computer Vision (ICVSS) 2025</a> in Sicily, Italy.
-            </li>
-            <li>
-               2025: &nbsp &nbsp Presenting <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> at <a href="https://cvprinparis.github.io/CVPR2025InParis/">CVPR@Paris 2025</a>.
-            </li>
-            <li>
-               2024: &nbsp &nbsp Our work <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> featured by <a href="https://www.linkedin.com/feed/update/urn:li:activity:7265412032504479744/">neptune.ai</a>. Full <a href="https://youtu.be/zSEv3KBGlJQ">video interview on YouTube</a>.
-            </li>
-            <li>
-               2024: &nbsp &nbsp Invited <a href="https://www.youtube.com/watch?v=ETfYZrSBzVQ">talk</a> at <a href="https://cohere.com/events/cohere-for-ai-shreyash-arya">Cohere for AI</a> on our NeurIPS 2024 publication.
-            </li>
-            <li>
-               2024: &nbsp &nbsp Joined as AI Research Engineer at <a href="https://detesia.com/">Detesia</a> (<a href="https://cispa.de/en">CISPA</a>) specializing in ML Explainability for Deep Fake Detection.
-            </li>
-            <li>
-               2024: &nbsp &nbsp Accepted full paper: <a href="https://nips.cc/virtual/2024/poster/95051">"B-cosification: Transforming Deep Neural Networks to be Inherently Interpretable"</a> at <a href="https://nips.cc/">NeurIPS 2024</a>.
-            </li>
-            <li>
-               2024: &nbsp &nbsp Completed Master's thesis: <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=AmWtEfEAAAAJ&citation_for_view=AmWtEfEAAAAJ:_FxGoFyzp5QC">"Increasing Interpretability of Deep Neural Networks via B-cosification"</a> at Saarland University.
-            </li>
-            <li>
-               2023: &nbsp &nbsp Attending <a href="https://iccv2023.thecvf.com/">ICCV 2023</a> in Paris as a student volunteer.
-            </li>
-            <li>
-               2022: &nbsp &nbsp Joined as Research Assistant at <a href="https://people.mpi-inf.mpg.de/~sarya/">MPI-INF</a> in the <a href="https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning">Computer Vision and Machine Learning group (D2)</a>.
-            </li>
-            <li>
-               2022: &nbsp &nbsp Joined as Research Assistant at <a href="https://www.dfki.de/">DFKI</a>, Cognitive Assistants group, working on the <a href="https://www.dfki.de/en/web/research/projects-and-publications/projects-overview/project/mephesto">MePheSTO</a> project with <a href="https://www.inria.fr/fr/mephesto-lia-au-service-de-la-detection-des-troubles-psychiatriques">Inria, France</a>.
-            </li>
-            <li>
-               2021: &nbsp &nbsp Paper accepted at <a href="https://www.bam.ac.uk/events-landing/conference.html">British Academy of Management 2021</a>.
-            </li>
-            <li>
-               2021: &nbsp &nbsp Paper accepted at <a href="https://aaai.org/Conferences/AAAI-21/ws21workshops/#ws05">CONSTRAINT Workshop @ AAAI 2021</a>.
-            </li>
-            <li>
-               2020: &nbsp &nbsp Published: <a href="https://arxiv.org/abs/2009.03168">"Effect of lockdown interventions to control the COVID-19 epidemic in India"</a>.
-            </li>
-        </ul>
-        </div>
-        </td>
-        </tr>
+        <br>
+        <table width="100%" align="center" border="0" cellpadding="0">
+          <tr style="padding:0px">
+            <td width="100%" valign="middle">
+              <heading>News</heading>
+            </td>
+          </tr>
+          <tr>
+            <td width="100%" valign="top">
+              <div class="news-timeline">
+                <ol class="timeline">
+
+                  <li class="year">
+                    <h3 class="year__label">2026</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Our work <a href="https://github.com/shrebox/Artifact-free-B-cos-Networks">"Faithful, Interpretable Chest X-ray Diagnosis with Artifact-free B-cos Networks"</a> accepted at <a href="https://conferences.miccai.org/2026/en/">MICCAI 2026</a>, Main Track.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2025</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Our work <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> accepted at the <a href="https://www.dagm-gcpr.de/year/2025/accepted-papers">DAGM German Conference on Pattern Recognition, Freiburg 2025</a>, Nectar Track.</span></li>
+                      <li class="entry"><span class="badge badge--talk">Talk</span><span class="entry__text">Presenting <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> at the <a href="https://icvss.dmi.unict.it/icvss2025/Home">International Summer School for Computer Vision (ICVSS) 2025</a> in Sicily, Italy.</span></li>
+                      <li class="entry"><span class="badge badge--talk">Talk</span><span class="entry__text">Presenting <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> at <a href="https://cvprinparis.github.io/CVPR2025InParis/">CVPR@Paris 2025</a>.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2024</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--media">Media</span><span class="entry__text">Our work <a href="https://github.com/shrebox/B-cosification">"B-cosification"</a> featured by <a href="https://www.linkedin.com/feed/update/urn:li:activity:7265412032504479744/">neptune.ai</a>. Full <a href="https://youtu.be/zSEv3KBGlJQ">video interview on YouTube</a>.</span></li>
+                      <li class="entry"><span class="badge badge--talk">Talk</span><span class="entry__text">Invited <a href="https://www.youtube.com/watch?v=ETfYZrSBzVQ">talk</a> at <a href="https://cohere.com/events/cohere-for-ai-shreyash-arya">Cohere for AI</a> on our NeurIPS 2024 publication.</span></li>
+                      <li class="entry"><span class="badge badge--career">Career</span><span class="entry__text">Joined as AI Research Engineer at <a href="https://detesia.com/">Detesia</a> (<a href="https://cispa.de/en">CISPA</a>) specializing in ML Explainability for Deep Fake Detection.</span></li>
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Accepted full paper: <a href="https://nips.cc/virtual/2024/poster/95051">"B-cosification: Transforming Deep Neural Networks to be Inherently Interpretable"</a> at <a href="https://nips.cc/">NeurIPS 2024</a>.</span></li>
+                      <li class="entry"><span class="badge badge--thesis">Thesis</span><span class="entry__text">Completed Master's thesis: <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=AmWtEfEAAAAJ&citation_for_view=AmWtEfEAAAAJ:_FxGoFyzp5QC">"Increasing Interpretability of Deep Neural Networks via B-cosification"</a> at Saarland University.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2023</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--service">Service</span><span class="entry__text">Attending <a href="https://iccv2023.thecvf.com/">ICCV 2023</a> in Paris as a student volunteer.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2022</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--career">Career</span><span class="entry__text">Joined as Research Assistant at <a href="https://people.mpi-inf.mpg.de/~sarya/">MPI-INF</a> in the <a href="https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning">Computer Vision and Machine Learning group (D2)</a>.</span></li>
+                      <li class="entry"><span class="badge badge--career">Career</span><span class="entry__text">Joined as Research Assistant at <a href="https://www.dfki.de/">DFKI</a>, Cognitive Assistants group, working on the <a href="https://www.dfki.de/en/web/research/projects-and-publications/projects-overview/project/mephesto">MePheSTO</a> project with <a href="https://www.inria.fr/fr/mephesto-lia-au-service-de-la-detection-des-troubles-psychiatriques">Inria, France</a>.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2021</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Paper accepted at <a href="https://www.bam.ac.uk/events-landing/conference.html">British Academy of Management 2021</a>.</span></li>
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Paper accepted at <a href="https://aaai.org/Conferences/AAAI-21/ws21workshops/#ws05">CONSTRAINT Workshop @ AAAI 2021</a>.</span></li>
+                    </ul>
+                  </li>
+
+                  <li class="year">
+                    <h3 class="year__label">2020</h3>
+                    <ul class="year__items">
+                      <li class="entry"><span class="badge badge--paper">Paper</span><span class="entry__text">Published: <a href="https://arxiv.org/abs/2009.03168">"Effect of lockdown interventions to control the COVID-19 epidemic in India"</a>.</span></li>
+                    </ul>
+                  </li>
+
+                </ol>
+              </div>
+            </td>
+          </tr>
         </table>
 
 
